@@ -42,7 +42,8 @@ export default function Cart({ onCheckout }: { onCheckout: () => void }) {
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
     return (
-        <div className="  w-full sm:w-96 bg-white shadow-lg flex flex-col top-0 sticky ">
+        <div className="w-full sm:w-96 bg-white shadow-lg flex flex-col top-0 sticky overflow-auto
+            h-full sm:h-screen ">
             {/* Cart Header */}
             <div className="p-4 border-b">
                 <div className="flex items-center gap-2">
