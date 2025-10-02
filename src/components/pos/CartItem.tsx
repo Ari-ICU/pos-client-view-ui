@@ -63,7 +63,7 @@ export default function CartItem({ item }: Props) {
         <div className="bg-gray-50 rounded-lg p-3 flex gap-3">
             {/* Product Image */}
             {/* {item.image && (
-                <img
+                <Image
                     src={item.image}
                     alt={item.name[language]}
                     width={64}
@@ -71,6 +71,7 @@ export default function CartItem({ item }: Props) {
                     className="w-16 h-16 object-cover rounded-lg"
                 />
             )} */}
+
             {item.image && (
                 <div className="flex relative items-center flex-shrink-0">
                     <p className='text-5xl'>{item.image}</p>

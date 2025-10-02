@@ -9,7 +9,7 @@ interface CheckoutModalProps {
     total: number;
     onClose: () => void;
     name?: string;
-    txId?: string; // optional unique transaction ID
+    txId?: string;
 }
 
 const translations = {
