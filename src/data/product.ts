@@ -1,0 +1,28 @@
+import { Product } from '@/types/product.type';
+
+export const products: Product[] = [
+    { id: 1, name: { en: 'Classic Burger', kh: 'ហ្គឺរបឺកបុរាណ' }, price: 12.99, category: { en: 'Food', kh: 'អាហារ' }, image: '🍔' },
+    { id: 2, name: { en: 'Margherita Pizza', kh: 'ម៉ាការីតា ពីហ្សា' }, price: 15.99, category: { en: 'Food', kh: 'អាហារ' }, image: '🍕' },
+    { id: 3, name: { en: 'Caesar Salad', kh: 'សាឡាត ស៊ីសា' }, price: 9.99, category: { en: 'Food', kh: 'អាហារ' }, image: '🥗' },
+    { id: 4, name: { en: 'Pasta Carbonara', kh: 'ប៉ាស្តា កាបូនារ៉ា' }, price: 13.99, category: { en: 'Food', kh: 'អាហារ' }, image: '🍝' },
+    { id: 5, name: { en: 'Coca Cola', kh: 'កូកា កូឡា' }, price: 2.99, category: { en: 'Beverages', kh: 'ភេសជ្ជៈ' }, image: '🥤' },
+    { id: 6, name: { en: 'Fresh Orange Juice', kh: 'ジュースស្វុរស' }, price: 4.99, category: { en: 'Beverages', kh: 'ភេសជ្ជៈ' }, image: '🧃' },
+    { id: 7, name: { en: 'Latte', kh: 'កាហ្វេទឹកដោះគោ' }, price: 4.49, category: { en: 'Beverages', kh: 'ភេសជ្ជៈ' }, image: '☕' },
+    { id: 8, name: { en: 'Iced Tea', kh: 'តែត្រជាក់' }, price: 3.49, category: { en: 'Beverages', kh: 'ភេសជ្ជៈ' }, image: '🍹' },
+    { id: 9, name: { en: 'Chocolate Cake', kh: 'នំសូកូឡា' }, price: 6.99, category: { en: 'Desserts', kh: 'បង្អែម' }, image: '🍰' },
+    { id: 10, name: { en: 'Ice Cream', kh: 'អ៊ីសខ្រីម' }, price: 5.49, category: { en: 'Desserts', kh: 'បង្អែម' }, image: '🍨' },
+    { id: 11, name: { en: 'Tiramisu', kh: 'ទីរ៉ាមីស៊ូ' }, price: 7.99, category: { en: 'Desserts', kh: 'បង្អែម' }, image: '🍮' },
+    { id: 12, name: { en: 'Cheesecake', kh: 'នំឈីសខេក' }, price: 7.49, category: { en: 'Desserts', kh: 'បង្អែម' }, image: '🧁' },
+
+    // New Products
+    { id: 13, name: { en: 'Grilled Chicken', kh: 'មាន់ចៀន' }, price: 14.99, category: { en: 'Food', kh: 'អាហារ' }, image: '🍗' },
+    { id: 14, name: { en: 'Beef Steak', kh: 'សាច់គោដុត' }, price: 22.99, category: { en: 'Food', kh: 'អាហារ' }, image: '🥩' },
+    { id: 15, name: { en: 'Veggie Wrap', kh: 'រ៉ូឡ៏បន្លែ' }, price: 8.99, category: { en: 'Food', kh: 'អាហារ' }, image: '🌯' },
+    { id: 16, name: { en: 'Mango Smoothie', kh: 'ម៉ាងហ្គោ សមូទី' }, price: 5.49, category: { en: 'Beverages', kh: 'ភេសជ្ជៈ' }, image: '🥭' },
+    { id: 17, name: { en: 'Espresso', kh: 'កាហ្វេអេស្បេសូ' }, price: 3.99, category: { en: 'Beverages', kh: 'ភេសជ្ជៈ' }, image: '☕' },
+    { id: 18, name: { en: 'Strawberry Milkshake', kh: 'ស្ត្រូប៉េរី មិលខេក' }, price: 4.99, category: { en: 'Beverages', kh: 'ភេសជ្ជៈ' }, image: '🍓' },
+    { id: 19, name: { en: 'Brownie', kh: 'នំប្រោនី' }, price: 5.99, category: { en: 'Desserts', kh: 'បង្អែម' }, image: '🍫' },
+    { id: 20, name: { en: 'Pancakes', kh: 'ប៉ាណាគេក' }, price: 6.49, category: { en: 'Desserts', kh: 'បង្អែម' }, image: '🥞' },
+    { id: 21, name: { en: 'Fruit Tart', kh: 'នំផ្លែឈើ' }, price: 7.99, category: { en: 'Desserts', kh: 'បង្អែម' }, image: '🍓🥧' },
+    { id: 22, name: { en: 'Hot Chocolate', kh: 'កាកាវក្តៅ' }, price: 3.99, category: { en: 'Beverages', kh: 'ភេសជ្ជៈ' }, image: '🍫☕' },
+];
