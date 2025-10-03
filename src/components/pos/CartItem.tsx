@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Trash2, Plus, Minus } from 'lucide-react';
-import Image from 'next/image';
+// import Image from 'next/image';
 import { useCart } from '@/context/cart.context';
 import { CartItem as CartItemType } from '@/types/cart.type';
 import { toast } from 'react-hot-toast';

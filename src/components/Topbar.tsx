@@ -44,7 +44,7 @@ export default function Topbar({
     }, []);
 
     return (
-        <header className="flex items-center justify-between bg-white px-6 py-3 shadow-md sticky top-0 z-50">
+        <header className="flex items-center justify-between bg-white px-6 py-3 shadow-md sticky top-0 z-0">
             {/* Mobile Menu Button */}
             <button
                 className="lg:hidden p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"

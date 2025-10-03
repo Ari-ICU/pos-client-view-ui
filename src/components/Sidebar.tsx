@@ -8,7 +8,10 @@ import { useLanguage } from "@/context/language.context"; // adjust path
 interface SidebarProps {
     isOpen: boolean;
     setIsOpen: (open: boolean) => void;
+    salesCount?: number;      // e.g., today's sales
+    lowStockCount?: number;   // products with stock < 10
 }
+
 
 // Define menu labels in multiple languages
 const menuLabels = {
@@ -34,25 +37,26 @@ const menuLabels = {
 
 
 const titles = {
-  en: "POS System",
-  kh: "ប្រព័ន្ធ POS",
+    en: "POS System",
+    kh: "ប្រព័ន្ធ POS",
 };
 
 
-export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
+export default function Sidebar({ isOpen, setIsOpen, salesCount = 0, lowStockCount = 0 }: SidebarProps) {
     const pathname = usePathname();
     const { language } = useLanguage();
 
-    // POS-like menu with icons and optional badges
     const navItems = [
         { key: "dashboard", href: "/dashboard", icon: Home },
-        { key: "sales", href: "/dashboard/sales", icon: ShoppingCart, badge: 3 },
+        { key: "sales", href: "/dashboard/sales", icon: ShoppingCart, badge: salesCount },
         { key: "products", href: "/dashboard/products", icon: Box },
         { key: "customers", href: "/dashboard/customers", icon: Users },
-        { key: "inventory", href: "/dashboard/inventory", icon: ClipboardList, badge: 5 },
+        { key: "inventory", href: "/dashboard/inventory", icon: ClipboardList, badge: lowStockCount },
         { key: "reports", href: "/dashboard/reports", icon: ClipboardList },
         { key: "settings", href: "/dashboard/settings", icon: Settings },
     ];
+
+
 
     return (
         <aside
@@ -78,11 +82,10 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
                         <Link
                             key={item.key}
                             href={item.href}
-                            className={`flex items-center justify-between px-4 py-3 rounded-lg font-medium text-sm transition-colors duration-200 ${
-                                isActive
-                                    ? "bg-blue-600 text-white"
-                                    : "text-gray-700 hover:bg-blue-100 hover:text-blue-800"
-                            }`}
+                            className={`flex items-center justify-between px-4 py-3 rounded-lg font-medium text-sm transition-colors duration-200 ${isActive
+                                ? "bg-blue-600 text-white"
+                                : "text-gray-700 hover:bg-blue-100 hover:text-blue-800"
+                                }`}
                         >
                             <div className="flex items-center space-x-3">
                                 <Icon className={`h-5 w-5 ${isActive ? "text-white" : "text-gray-500"}`} />
@@ -90,9 +93,8 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
                             </div>
                             {item.badge && (
                                 <span
-                                    className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
-                                        isActive ? "bg-white text-blue-600" : "bg-red-100 text-red-700"
-                                    }`}
+                                    className={`text-xs font-semibold px-2 py-0.5 rounded-full ${isActive ? "bg-white text-blue-600" : "bg-red-100 text-red-700"
+                                        }`}
                                 >
                                     {item.badge}
                                 </span>

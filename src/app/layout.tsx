@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/cart.context";
 import { LanguageProvider } from "@/context/language.context";
+import { SettingsProvider } from "@/context/settings.context";
 import { Toaster } from 'react-hot-toast';
 
 const geistSans = Geist({
@@ -38,7 +39,9 @@ export default function RootLayout({
             // Limit max 3 toasts at a time
           }} />
         <LanguageProvider>
-          <CartProvider>{children}</CartProvider>
+          <SettingsProvider>
+            <CartProvider>{children}</CartProvider>
+          </SettingsProvider>
         </LanguageProvider>
 
       </body>

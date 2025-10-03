@@ -4,6 +4,7 @@ interface Product {
     price: number;
     category: { en: string; kh: string };
     image: string;
+    stock: number; // ✅ added
 }
 
 export type { Product };
