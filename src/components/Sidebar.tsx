@@ -91,6 +91,7 @@ export default function Sidebar({ isOpen, setIsOpen, salesCount = 0, lowStockCou
                         <Link
                             key={item.key}
                             href={item.href}
+                            onClick={() => setIsOpen(false)} // <-- Close sidebar on link click
                             className={`flex items-center justify-between px-4 py-3 rounded-lg font-medium text-sm transition-colors duration-200 ${
                                 isActive ? "bg-blue-600 text-white" : "text-gray-700 hover:bg-blue-100 hover:text-blue-800"
                             }`}
