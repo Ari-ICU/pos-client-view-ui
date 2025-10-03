@@ -3,17 +3,16 @@
 import Link from "next/link";
 import { X, Home, ShoppingCart, Box, Users, ClipboardList, Settings } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { useLanguage } from "@/context/language.context"; // adjust path
+import { useLanguage } from "@/context/language.context";
+import { useRef, useEffect } from "react";
 
 interface SidebarProps {
     isOpen: boolean;
     setIsOpen: (open: boolean) => void;
-    salesCount?: number;      // e.g., today's sales
-    lowStockCount?: number;   // products with stock < 10
+    salesCount?: number;
+    lowStockCount?: number;
 }
 
-
-// Define menu labels in multiple languages
 const menuLabels = {
     en: {
         dashboard: "Dashboard",
@@ -35,16 +34,15 @@ const menuLabels = {
     },
 };
 
-
 const titles = {
     en: "POS System",
     kh: "ប្រព័ន្ធ POS",
 };
 
-
 export default function Sidebar({ isOpen, setIsOpen, salesCount = 0, lowStockCount = 0 }: SidebarProps) {
     const pathname = usePathname();
     const { language } = useLanguage();
+    const sidebarRef = useRef<HTMLDivElement>(null);
 
     const navItems = [
         { key: "dashboard", href: "/dashboard", icon: Home },
@@ -56,12 +54,23 @@ export default function Sidebar({ isOpen, setIsOpen, salesCount = 0, lowStockCou
         { key: "settings", href: "/dashboard/settings", icon: Settings },
     ];
 
-
+    // Close sidebar on click outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
+                setIsOpen(false);
+            }
+        };
+        if (isOpen) document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [isOpen, setIsOpen]);
 
     return (
         <aside
-            className={`fixed inset-y-0 left-0 transform bg-white w-64 shadow-lg transition-transform lg:translate-x-0 z-50 ${isOpen ? "translate-x-0" : "-translate-x-full"
-                }`}
+            ref={sidebarRef}
+            className={`fixed inset-y-0 left-0 transform bg-white w-64 shadow-lg transition-transform lg:translate-x-0 z-50 ${
+                isOpen ? "translate-x-0" : "-translate-x-full"
+            }`}
         >
             {/* Top Bar */}
             <div className="flex items-center justify-between px-6 py-4 border-b bg-blue-50">
@@ -82,10 +91,9 @@ export default function Sidebar({ isOpen, setIsOpen, salesCount = 0, lowStockCou
                         <Link
                             key={item.key}
                             href={item.href}
-                            className={`flex items-center justify-between px-4 py-3 rounded-lg font-medium text-sm transition-colors duration-200 ${isActive
-                                ? "bg-blue-600 text-white"
-                                : "text-gray-700 hover:bg-blue-100 hover:text-blue-800"
-                                }`}
+                            className={`flex items-center justify-between px-4 py-3 rounded-lg font-medium text-sm transition-colors duration-200 ${
+                                isActive ? "bg-blue-600 text-white" : "text-gray-700 hover:bg-blue-100 hover:text-blue-800"
+                            }`}
                         >
                             <div className="flex items-center space-x-3">
                                 <Icon className={`h-5 w-5 ${isActive ? "text-white" : "text-gray-500"}`} />
@@ -93,8 +101,9 @@ export default function Sidebar({ isOpen, setIsOpen, salesCount = 0, lowStockCou
                             </div>
                             {item.badge && (
                                 <span
-                                    className={`text-xs font-semibold px-2 py-0.5 rounded-full ${isActive ? "bg-white text-blue-600" : "bg-red-100 text-red-700"
-                                        }`}
+                                    className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
+                                        isActive ? "bg-white text-blue-600" : "bg-red-100 text-red-700"
+                                    }`}
                                 >
                                     {item.badge}
                                 </span>

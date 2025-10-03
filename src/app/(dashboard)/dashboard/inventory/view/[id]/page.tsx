@@ -21,7 +21,7 @@ export default function ViewProductPage() {
     }
 
     return (
-        <div className="p-6 space-y-6">
+        <div className="sm:p-6 p-2 space-y-6">
             {/* Header */}
             <div className="flex items-center gap-4">
                 <Link

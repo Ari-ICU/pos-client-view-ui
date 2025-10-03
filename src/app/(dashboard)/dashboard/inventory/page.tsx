@@ -18,7 +18,7 @@ export default function ProductsPage() {
     };
 
     return (
-        <div className="p-6">
+        <div className="sm:p-6 p-2">
             <InventoryHeader
                 titleKey={language === "en" ? "Inventory" : "ផលិតផល"}
                 addUrl="/dashboard/inventory/create"
