@@ -12,7 +12,7 @@ interface ProductGridProps {
 function ProductGridComponent({ products, onAddToCart }: ProductGridProps) {
     if (!products?.length) {
         return (
-            <div className="text-center text-gray-500 py-10" suppressHydrationWarning>
+            <div className="text-center text-gray-500 py-10" >
                 No products available
             </div>
         );
@@ -21,7 +21,6 @@ function ProductGridComponent({ products, onAddToCart }: ProductGridProps) {
     return (
         <div
             className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-h-screen overflow-y-auto"
-            suppressHydrationWarning
         >
             {products.map((product) => (
                 <Product

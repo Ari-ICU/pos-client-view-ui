@@ -42,7 +42,6 @@ export default function POSSystemPage() {
     return (
         <div
             className="flex flex-col md:flex-row bg-gray-100 min-h-screen"
-            suppressHydrationWarning
         >
             {/* Left Panel: Products */}
             <div className="flex-1 flex flex-col">

@@ -33,7 +33,6 @@ export default function Product({ product, onAddToCart }: ProductProps) {
         <button
             onClick={handleAddToCart}
             className="bg-white rounded-lg p-4 shadow hover:shadow-lg transition-shadow text-left w-full"
-            suppressHydrationWarning
         >
             <div className="text-5xl mb-2 text-center">{product.image}</div>
             <h3 className="font-semibold text-gray-800 mb-1">
