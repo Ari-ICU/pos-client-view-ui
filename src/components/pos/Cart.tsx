@@ -24,42 +24,46 @@ export default function Cart({ onCheckout }: { onCheckout: () => void }) {
 
     const translations = {
         en: {
-            currentOrder: 'Current Order',
-            noItems: 'No items in cart',
+            currentOrder: 'Your Order',
+            noItems: 'Your cart is empty',
             subtotal: 'Subtotal',
             tax: 'Tax (10%)',
             total: 'Total',
-            checkout: 'Checkout',
+            checkout: 'Proceed to Checkout',
             orderPlaced: `Order placed! Total: $${total.toFixed(2)}`,
             close: 'Close',
             payWithKHQR: 'Pay with KHQR',
+            printRecipes: 'Print Recipes',
         },
         kh: {
-            currentOrder: 'ការបញ្ជាទិញបច្ចុប្បន្ន',
-            noItems: 'មិនមានទំនិញនៅក្នុងរទេះ',
+            currentOrder: 'ការបញ្ជាទិញរបស់អ្នក',
+            noItems: 'រទេះរបស់អ្នកទទេ',
             subtotal: 'សរុបក្រៅពន្ធ',
             tax: 'ពន្ធ (10%)',
             total: 'សរុប',
-            checkout: 'បញ្ជាទិញ',
+            checkout: 'បន្តទៅកាន់ការបញ្ជាទិញ',
             orderPlaced: `បានបញ្ជាទិញ! សរុប: $${total.toFixed(2)}`,
             close: 'បិទ',
             payWithKHQR: 'បង់ប្រាក់ដោយ KHQR',
+            printRecipes: 'បោះពុម្ពរូបមន្ត',
         },
     };
 
     const t = translations[language];
-
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
     return (
-        <div className="w-full sm:w-96 bg-white shadow-lg flex flex-col top-0 sticky overflow-auto
-            h-full sm:h-screen ">
+        <div className="w-full sm:w-96 bg-white shadow-xl flex flex-col top-0 sticky overflow-hidden h-full sm:h-screen border-l border-gray-200">
             {/* Cart Header */}
-            <div className="p-4 border-b">
-                <div className="flex items-center gap-2">
-                    <ShoppingCart className="text-blue-600" size={24} />
-                    <h2 className="text-xl font-bold text-gray-800">{t.currentOrder}</h2>
-                    <span className="ml-auto bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">
+            <div className="p-5 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-white">
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                        <div className="p-2 bg-blue-100 rounded-full">
+                            <ShoppingCart className="text-blue-600" size={20} />
+                        </div>
+                        <h2 className="text-lg font-semibold text-gray-800">{t.currentOrder}</h2>
+                    </div>
+                    <span className="bg-blue-600 text-white text-xs font-bold px-2.5 py-1 rounded-full">
                         {totalItems}
                     </span>
                 </div>
@@ -68,13 +72,15 @@ export default function Cart({ onCheckout }: { onCheckout: () => void }) {
             {/* Cart Items */}
             <div className="flex-1 overflow-y-auto p-4">
                 {cart.length === 0 ? (
-                    <div className="text-center text-gray-400 mt-20">
-                        <ShoppingCart size={64} className="mx-auto mb-4 opacity-50" />
-                        <p>{t.noItems}</p>
+                    <div className="flex flex-col items-center justify-center h-full text-center px-6 py-12 text-gray-500">
+                        <div className="p-3 bg-gray-100 rounded-full mb-4">
+                            <ShoppingCart size={32} className="text-gray-400" />
+                        </div>
+                        <p className="text-gray-600 font-medium">{t.noItems}</p>
                     </div>
                 ) : (
-                    <div className="space-y-3">
-                        {cart.map(item => (
+                    <div className="space-y-4">
+                        {cart.map((item) => (
                             <CartItem key={item.id} item={item} />
                         ))}
                     </div>
@@ -82,23 +88,23 @@ export default function Cart({ onCheckout }: { onCheckout: () => void }) {
             </div>
 
             {/* Cart Summary */}
-            <div className="border-t p-4 bg-gray-50">
-                <div className="space-y-2 mb-4">
+            <div className="border-t border-gray-200 p-5 bg-gray-50">
+                <div className="space-y-2 mb-5">
                     <div className="flex justify-between text-gray-600">
                         <span>{t.subtotal}</span>
-                        <span>${subtotal.toFixed(2)}</span>
+                        <span className="font-medium">${subtotal.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between text-gray-600">
                         <span>{t.tax}</span>
-                        <span>${tax.toFixed(2)}</span>
+                        <span className="font-medium">${tax.toFixed(2)}</span>
                     </div>
-                    <div className="flex justify-between text-xl font-bold text-gray-800 pt-2 border-t">
+                    <div className="flex justify-between text-lg font-bold text-gray-900 pt-3 border-t border-gray-200">
                         <span>{t.total}</span>
                         <span>${total.toFixed(2)}</span>
                     </div>
                 </div>
 
-                <div>
+                <div className="space-y-3">
                     {!isCustomerViewsRoute && (
                         <>
                             <button
@@ -106,32 +112,31 @@ export default function Cart({ onCheckout }: { onCheckout: () => void }) {
                                 disabled={cart.length === 0}
                                 aria-label={t.checkout}
                                 aria-disabled={cart.length === 0}
-                                className={`w-full py-3 rounded-lg font-bold text-white transition-colors ${cart.length === 0 ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
+                                className={`w-full py-3.5 px-4 rounded-xl font-semibold text-white transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 shadow-sm ${cart.length === 0
+                                        ? 'bg-gray-300 cursor-not-allowed opacity-80'
+                                        : 'bg-blue-600 hover:bg-blue-700 hover:shadow-md focus:ring-blue-500'
                                     }`}
                             >
                                 {t.checkout}
                             </button>
+
                             {cart.length > 0 && (
                                 <button
                                     onClick={handlePrintRecipes}
-                                    aria-label="Print Recipes"
-                                    className="w-full py-3 mt-3 rounded-lg font-bold text-white bg-green-600 hover:bg-green-700"
+                                    aria-label={t.printRecipes}
+                                    className="w-full py-3 px-4 rounded-xl font-semibold text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                                 >
-                                    Print Recipes
+                                    {t.printRecipes}
                                 </button>
                             )}
                         </>
                     )}
                 </div>
-
             </div>
 
             {/* Checkout Modal */}
             {showModal && (
-                <CheckoutModal
-                    total={total}
-                    onClose={() => setShowModal(false)}
-                />
+                <CheckoutModal total={total} onClose={() => setShowModal(false)} />
             )}
         </div>
     );

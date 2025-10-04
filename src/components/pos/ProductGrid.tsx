@@ -12,19 +12,17 @@ interface ProductGridProps {
 function ProductGridComponent({ products, onAddToCart }: ProductGridProps) {
     if (!products?.length) {
         return (
-            <div className="text-center text-gray-500 py-10" >
-                No products available
+            <div className="text-center text-gray-500 py-16 px-4">
+                <p className="text-lg">No products available</p>
             </div>
         );
     }
 
     return (
-        <div
-            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-h-screen overflow-y-auto"
-        >
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 p-4 max-h-[calc(100vh-140px)] overflow-y-auto">
             {products.map((product) => (
                 <Product
-                    key={product.id || product.name?.en} // fallback for missing IDs
+                    key={product.id || product.name?.en || Math.random()} // Better fallback
                     product={product}
                     onAddToCart={onAddToCart}
                 />
@@ -33,5 +31,4 @@ function ProductGridComponent({ products, onAddToCart }: ProductGridProps) {
     );
 }
 
-// ✅ `React.memo` prevents re-rendering unless products or onAddToCart change
 export default memo(ProductGridComponent);

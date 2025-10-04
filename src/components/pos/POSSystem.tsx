@@ -17,16 +17,16 @@ export default function POSSystemPage() {
 
     const categories = ['All', 'Food', 'Beverages', 'Desserts'];
 
-    // ✅ Use useMemo to avoid recalculating filtered products on every render
+    // ✅ FIXED: Added proper dependencies to useMemo
     const filteredProducts = useMemo(() => {
         return products.filter((p) => {
-            const name = (p.name?.[language] ?? '').toLowerCase();
-            const nameMatches = name.includes(searchTerm.toLowerCase());
-            const categoryMatches =
-                selectedCategory === 'All' || p.category.en === selectedCategory;
-            return nameMatches && categoryMatches;
+            const name = (p.name?.[language] || p.name?.en || '').toLowerCase();
+            const matchesSearch = name.includes(searchTerm.toLowerCase());
+            const matchesCategory =
+                selectedCategory === 'All' || p.category?.en === selectedCategory;
+            return matchesSearch && matchesCategory;
         });
-    }, []);
+    }, [searchTerm, selectedCategory, language]); // ← Critical: include all dependencies
 
     const handleCheckout = () => {
         if (total > 0) {
@@ -40,9 +40,7 @@ export default function POSSystemPage() {
     };
 
     return (
-        <div
-            className="flex flex-col md:flex-row bg-gray-100 min-h-screen"
-        >
+        <div className="flex flex-col md:flex-row bg-gray-100 min-h-screen">
             {/* Left Panel: Products */}
             <div className="flex-1 flex flex-col">
                 <POSHeader
@@ -57,17 +55,9 @@ export default function POSSystemPage() {
                 </div>
             </div>
 
-            {/* Right Panel: Cart */}
-            <div
-                className="
-                    hidden md:block 
-                    w-full md:w-96 
-                    border-t md:border-t-0 md:border-l border-gray-200 bg-white
-                "
-            >
+            {/* Right Panel: Cart (Desktop only) */}
+            <div className="hidden md:block w-96 border-l border-gray-200 bg-white">
                 <Cart onCheckout={handleCheckout} />
-
-                
             </div>
         </div>
     );

@@ -26,7 +26,11 @@ export default function CategoryFilter({
     };
 
     return (
-        <div className="flex gap-2 mt-4 overflow-x-auto">
+        <div
+            className="flex gap-2 mt-4 pb-2 overflow-x-auto hide-scrollbar"
+            role="tablist"
+            aria-label={language === 'en' ? 'Product categories' : 'ប្រភេទផលិតផល'}
+        >
             {categories.map((category) => {
                 const isSelected = selectedCategory.toLowerCase() === category.toLowerCase();
                 const displayName = getCategoryName(category);
@@ -35,11 +39,12 @@ export default function CategoryFilter({
                     <button
                         key={category}
                         onClick={() => onCategoryChange(category)}
-                        className={`px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors ${
-                            isSelected
-                                ? 'bg-blue-600 text-white'
-                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                        }`}
+                        className={`px-4 py-2.5 text-sm font-medium rounded-full whitespace-nowrap transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${isSelected
+                                ? 'bg-blue-600 text-white shadow-sm'
+                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                            }`}
+                        role="tab"
+                        aria-selected={isSelected}
                         aria-pressed={isSelected}
                     >
                         {displayName}
