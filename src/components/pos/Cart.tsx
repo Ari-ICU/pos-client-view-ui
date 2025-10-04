@@ -13,6 +13,15 @@ export default function Cart({ onCheckout }: { onCheckout: () => void }) {
     const pathname = usePathname();
     const isCustomerViewsRoute = pathname.includes('/customer-views');
 
+    const handlePrintRecipes = () => {
+        try {
+            window.open('/print-recipes', '_blank');
+        } catch (error) {
+            console.error('Failed to open print recipes:', error);
+            alert('Unable to open print recipes. Please try again.');
+        }
+    };
+
     const translations = {
         en: {
             currentOrder: 'Current Order',
@@ -89,17 +98,32 @@ export default function Cart({ onCheckout }: { onCheckout: () => void }) {
                     </div>
                 </div>
 
-                {!isCustomerViewsRoute && (
-                    <button
-                        onClick={() => setShowModal(true)}
-                        disabled={cart.length === 0}
-                        className={`w-full py-3 rounded-lg font-bold text-white transition-colors ${cart.length === 0 ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
-                            }`}
-                    >
-                        {t.checkout}
-                    </button>
+                <div>
+                    {!isCustomerViewsRoute && (
+                        <>
+                            <button
+                                onClick={() => setShowModal(true)}
+                                disabled={cart.length === 0}
+                                aria-label={t.checkout}
+                                aria-disabled={cart.length === 0}
+                                className={`w-full py-3 rounded-lg font-bold text-white transition-colors ${cart.length === 0 ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
+                                    }`}
+                            >
+                                {t.checkout}
+                            </button>
+                            {cart.length > 0 && (
+                                <button
+                                    onClick={handlePrintRecipes}
+                                    aria-label="Print Recipes"
+                                    className="w-full py-3 mt-3 rounded-lg font-bold text-white bg-green-600 hover:bg-green-700"
+                                >
+                                    Print Recipes
+                                </button>
+                            )}
+                        </>
+                    )}
+                </div>
 
-                )}
             </div>
 
             {/* Checkout Modal */}

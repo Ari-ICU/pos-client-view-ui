@@ -66,6 +66,8 @@ export default function POSSystemPage() {
                 "
             >
                 <Cart onCheckout={handleCheckout} />
+
+                
             </div>
         </div>
     );
