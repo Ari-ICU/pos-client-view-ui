@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { ShoppingCart } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 import CartItem from './CartItem';
 import CheckoutModal from './CheckoutModal';
 import { useCart } from '@/context/cart.context';
@@ -11,6 +12,8 @@ export default function Cart({ onCheckout }: { onCheckout: () => void }) {
     const { cart, subtotal, tax, total } = useCart();
     const { language } = useLanguage();
     const [showModal, setShowModal] = useState(false);
+    const pathname = usePathname();
+    const isCustomerViewsRoute = pathname.includes('customer-views');
 
     const translations = {
         en: {
@@ -25,9 +28,9 @@ export default function Cart({ onCheckout }: { onCheckout: () => void }) {
             payWithKHQR: 'Pay with KHQR',
         },
         kh: {
-            currentOrder: 'ការបញ្ជាទិញ​បច្ចុប្បន្ន',
+            currentOrder: 'ការបញ្ជាទិញបច្ចុប្បន្ន',
             noItems: 'មិនមានទំនិញនៅក្នុងរទេះ',
-            subtotal: 'សរុប​ក្រៅពន្ធ',
+            subtotal: 'សរុបក្រៅពន្ធ',
             tax: 'ពន្ធ (10%)',
             total: 'សរុប',
             checkout: 'បញ្ជាទិញ',
@@ -87,16 +90,18 @@ export default function Cart({ onCheckout }: { onCheckout: () => void }) {
                         <span>${total.toFixed(2)}</span>
                     </div>
                 </div>
-                <button
-                    onClick={() => setShowModal(true)}
-                    disabled={cart.length === 0}
-                    className={`w-full py-3 rounded-lg font-bold text-white transition-colors ${cart.length === 0
-                            ? 'bg-gray-300 cursor-not-allowed'
-                            : 'bg-blue-600 hover:bg-blue-700'
-                        }`}
-                >
-                    {t.checkout}
-                </button>
+                {!isCustomerViewsRoute && (
+                    <button
+                        onClick={() => setShowModal(true)}
+                        disabled={cart.length === 0}
+                        className={`w-full py-3 rounded-lg font-bold text-white transition-colors ${cart.length === 0
+                                ? 'bg-gray-300 cursor-not-allowed'
+                                : 'bg-blue-600 hover:bg-blue-700'
+                            }`}
+                    >
+                        {t.checkout}
+                    </button>
+                )}
             </div>
 
             {/* Checkout Modal */}
