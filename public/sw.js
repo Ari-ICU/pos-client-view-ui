@@ -12,15 +12,16 @@ self.addEventListener('install', (event) => {
         (async () => {
             try {
                 const cache = await caches.open(CACHE_NAME);
-                await cache.addAll(urlsToCache);  // Batch add with error handling below
+                // Add with individual handling to avoid full install fail
+                await Promise.all(urlsToCache.map(url => cache.add(url).catch(err => console.error(`Failed to cache ${url}:`, err))));
                 console.log('All assets cached successfully');
             } catch (err) {
                 console.error('Caching failed:', err);
-                // Optionally, re-throw to fail install if critical assets miss
+                throw err; // Fail install if critical
             }
         })()
     );
-    self.skipWaiting();  // Activate immediately
+    self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {

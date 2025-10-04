@@ -2,7 +2,7 @@
 
 import { Search } from 'lucide-react';
 import { useLanguage } from '@/context/language.context';
-import CategoryFilter from '@/components/CategoryFilter';
+import CategoryFilter from '@/components/CategoryFilters';
 import { products } from '@/data/product';
 
 interface ProductHeaderProps {
