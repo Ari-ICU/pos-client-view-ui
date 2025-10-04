@@ -5,7 +5,7 @@ import { CartProvider } from "@/context/cart.context";
 import { LanguageProvider } from "@/context/language.context";
 import { SettingsProvider } from "@/context/settings.context";
 import { Toaster } from "react-hot-toast";
-import { useEffect } from "react";
+import FullscreenWrapper from "@/components/FullscreenWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -52,16 +52,6 @@ export const viewport: Viewport = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  useEffect(() => {
-    if (document.documentElement.requestFullscreen && "displayMode" in navigator) {
-      if (navigator.displayMode === "fullscreen" || navigator.displayMode === "standalone") {
-        document.documentElement.requestFullscreen().catch((err) => {
-          console.log(`Error entering fullscreen: ${err.message}`);
-        });
-      }
-    }
-  }, []);
-
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -77,7 +67,11 @@ export default function RootLayout({
         />
         <LanguageProvider>
           <SettingsProvider>
-            <CartProvider>{children}</CartProvider>
+            <CartProvider>
+              <FullscreenWrapper>
+                {children}
+              </FullscreenWrapper>
+            </CartProvider>
           </SettingsProvider>
         </LanguageProvider>
       </body>
