@@ -104,7 +104,7 @@ export default function POSHeader({
             {/* Mobile Cart Drawer */}
             {mobileCartOpen && (
                 <div
-                    className="fixed inset-0 bg-black/50 z-50 sm:hidden"
+                    className="fixed inset-0 bg-black/50 z-50 md:hidden"
                     onClick={() => setMobileCartOpen(false)}
                 >
                     <div
