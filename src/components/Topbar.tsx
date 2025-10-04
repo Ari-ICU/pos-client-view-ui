@@ -30,6 +30,7 @@ export default function Topbar({
         kh: { profile: "ប្រវត្តិអ្នកប្រើ", logout: "ចាកចេញ", dashboard: "ផ្ទាំងគ្រប់គ្រង POS" },
     };
 
+    // Close dropdowns on outside click
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -43,8 +44,20 @@ export default function Topbar({
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
+    // Close on ESC key
+    useEffect(() => {
+        const handleEsc = (e: KeyboardEvent) => {
+            if (e.key === "Escape") {
+                setDropdownOpen(false);
+                setLangOpen(false);
+            }
+        };
+        document.addEventListener("keydown", handleEsc);
+        return () => document.removeEventListener("keydown", handleEsc);
+    }, []);
+
     return (
-        <header className="flex items-center justify-between bg-white px-6 py-3 shadow-md sticky top-0 z-0">
+        <header className="flex items-center justify-between bg-white px-6 py-3 shadow-md sticky top-0 z-50">
             {/* Mobile Menu Button */}
             <button
                 className="lg:hidden p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -54,12 +67,13 @@ export default function Topbar({
                 <Menu className="h-6 w-6 text-gray-600" />
             </button>
 
+            {/* Center (placeholder for title/logo if needed) */}
             <span className="sr-only">{labels[language].dashboard}</span>
             <span></span>
 
             {/* Right Section */}
             <div className="flex items-center space-x-4">
-                {/* Notification */}
+                {/* Notifications */}
                 <div className="relative group">
                     <Bell className="h-5 w-5 text-gray-600 hover:text-gray-800 cursor-pointer" />
                     {pendingOrders > 0 && (
@@ -76,19 +90,22 @@ export default function Topbar({
                 <div className="relative" ref={langRef}>
                     <button
                         onClick={() => setLangOpen(!isLangOpen)}
+                        aria-haspopup="true"
+                        aria-expanded={isLangOpen}
                         className="flex items-center space-x-1 px-3 py-1 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     >
                         <Globe className="h-4 w-4" />
                         <span className="text-sm font-medium">{language.toUpperCase()}</span>
                     </button>
                     {isLangOpen && (
-                        <div className="absolute right-0 mt-2 w-28 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                        <div className="absolute right-0 mt-2 w-28 bg-white border border-gray-200 rounded-lg shadow-lg z-50 transition ease-out duration-200 transform scale-95 origin-top-right">
                             {["en", "kh"].map((lang) => (
                                 <button
                                     key={lang}
                                     onClick={() => { switchLanguage(); setLangOpen(false); }}
-                                    className={`w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 ${language === lang ? "font-semibold bg-gray-50" : ""
-                                        }`}
+                                    className={`w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 ${
+                                        language === lang ? "font-semibold bg-gray-50" : ""
+                                    }`}
                                 >
                                     {lang.toUpperCase()}
                                 </button>
@@ -101,6 +118,8 @@ export default function Topbar({
                 <div className="relative" ref={dropdownRef}>
                     <button
                         onClick={() => setDropdownOpen(!isDropdownOpen)}
+                        aria-haspopup="true"
+                        aria-expanded={isDropdownOpen}
                         className="flex items-center space-x-2 px-2 py-1 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     >
                         <span className="text-gray-600 font-medium">{userName}</span>
@@ -114,7 +133,7 @@ export default function Topbar({
                     </button>
 
                     {isDropdownOpen && (
-                        <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 animate-fadeIn">
+                        <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 transition ease-out duration-200 transform scale-95 origin-top-right">
                             <button className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">
                                 {labels[language].profile}
                             </button>
