@@ -3,77 +3,61 @@ const urlsToCache = [
     '/',
     '/favicon.ico',
     '/192.png',
-    '/manifest.json',  // Added: For PWA manifest
+    '/manifest.json',
+    '/offline.html', // fallback page
 ];
 
 self.addEventListener('install', (event) => {
-    console.log('SW installing...');
     event.waitUntil(
         (async () => {
-            try {
-                const cache = await caches.open(CACHE_NAME);
-                // Add with individual handling to avoid full install fail
-                await Promise.all(urlsToCache.map(url => cache.add(url).catch(err => console.error(`Failed to cache ${url}:`, err))));
-                console.log('All assets cached successfully');
-            } catch (err) {
-                console.error('Caching failed:', err);
-                throw err; // Fail install if critical
-            }
+            const cache = await caches.open(CACHE_NAME);
+            await Promise.all(
+                urlsToCache.map(url =>
+                    cache.add(url).catch(err => console.error(`Failed to cache ${url}:`, err))
+                )
+            );
         })()
     );
     self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
-    console.log('SW activated');
     event.waitUntil(
         (async () => {
             const cacheNames = await caches.keys();
             await Promise.all(
-                cacheNames.map((cacheName) => {
-                    if (cacheName !== CACHE_NAME) {
-                        console.log('Deleting old cache:', cacheName);
-                        return caches.delete(cacheName);
-                    }
-                })
+                cacheNames.map(name => name !== CACHE_NAME ? caches.delete(name) : undefined)
             );
         })()
     );
-    self.clients.claim();  // Take control immediately
+    self.clients.claim();
 });
 
-// Removed invalid 'reinstall' listener
-
 self.addEventListener('fetch', (event) => {
-    // Skip non-GET or non-HTTP(S) requests (e.g., data: URIs)
-    if (event.request.method !== 'GET' || !event.request.url.startsWith('http')) {
-        return;
-    }
+    if (event.request.method !== 'GET' || !event.request.url.startsWith('http')) return;
 
     event.respondWith(
         (async () => {
-            // Try cache first
-            let response = await caches.match(event.request);
-            if (response) {
-                return response;
+            const cache = await caches.open(CACHE_NAME);
+            const cachedResponse = await caches.match(event.request);
+
+            if (cachedResponse) {
+                event.waitUntil(
+                    fetch(event.request)
+                        .then(networkResponse => {
+                            if (networkResponse.ok) cache.put(event.request, networkResponse.clone());
+                        })
+                        .catch(() => { })
+                );
+                return cachedResponse;
             }
 
-            // If not in cache, try network
             try {
-                response = await fetch(event.request);
-                // Optionally cache successful responses for future offline use
-                if (response.ok) {
-                    const cache = await caches.open(CACHE_NAME);
-                    event.waitUntil(cache.put(event.request, response.clone()));
-                }
+                const response = await fetch(event.request);
+                if (response.ok) cache.put(event.request, response.clone());
                 return response;
-            } catch (err) {
-                console.warn('Fetch failed; serving offline fallback:', err);
-                // Fall back to a cached offline page
-                return caches.match('/offline.html') || new Response('Offline - Please check your connection.', {
-                    status: 503,
-                    statusText: 'Service Unavailable'
-                });
+            } catch {
+                return caches.match('/offline.html') || new Response('Offline', { status: 503 });
             }
         })()
     );
