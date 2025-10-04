@@ -7,9 +7,29 @@ export default function Home() {
 
   useEffect(() => {
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js')
-        .then(reg => console.log('Service Worker registered:', reg))
-        .catch(err => console.log('SW registration failed:', err));
+      window.addEventListener('load', () => {  // Ensure SW registers after page load
+        navigator.serviceWorker.register('/sw.js')
+          .then(registration => {
+            console.log('Service Worker registered:', registration);
+
+            // Listen for updates to the SW
+            registration.onupdatefound = () => {
+              const newWorker = registration.installing;
+              if (newWorker) {
+                newWorker.onstatechange = () => {
+                  if (newWorker.state === 'installed') {
+                    if (navigator.serviceWorker.controller) {
+                      console.log('New content available, please refresh.');
+                    } else {
+                      console.log('Content cached for offline use.');
+                    }
+                  }
+                };
+              }
+            };
+          })
+          .catch(error => console.error('SW registration failed:', error));
+      });
     }
   }, []);
 
