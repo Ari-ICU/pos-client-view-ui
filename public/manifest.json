@@ -1,6 +1,6 @@
 {
-    "name": "POS System",
-    "short_name": "POS",
+    "name": "My New POS System",
+    "short_name": "MyPOS",
     "start_url": "/",
     "display": "fullscreen",
     "background_color": "#ffffff",

@@ -1,16 +1,22 @@
-// public/sw.js
-const CACHE_NAME = 'pos-pwa-v1';
-const urlsToCache = ['/', '/favicon.ico'];  // Add more as needed
+const CACHE_NAME = 'pos-pwa-v2';
+const urlsToCache = ['/', '/favicon.ico', '/192.png'];
 
 self.addEventListener('install', (event) => {
-    console.log('SW installing...');  
+    console.log('SW installing...');
     event.waitUntil(
-        caches.open(CACHE_NAME).then((cache) => {
-            console.log('SW caching files');
-            return cache.addAll(urlsToCache);
-        })
+        (async () => {
+            const cache = await caches.open(CACHE_NAME);
+            for (const url of urlsToCache) {
+                try {
+                    await cache.add(url);
+                    console.log('Cached:', url);
+                } catch (err) {
+                    console.warn('Failed to cache:', url, err);
+                }
+            }
+        })()
     );
-    self.skipWaiting(); 
+    self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
@@ -27,7 +33,7 @@ self.addEventListener('activate', (event) => {
             )
         )
     );
-    self.clients.claim();  // Takes control immediately
+    self.clients.claim();
 });
 
 self.addEventListener('fetch', (event) => {
