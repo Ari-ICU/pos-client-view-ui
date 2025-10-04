@@ -1,28 +1,14 @@
 'use client';
 
-import dynamic from 'next/dynamic';
-import { Suspense, useEffect } from 'react';
-
-const POSSystemPage = dynamic(() => import('@/components/pos/POSSystem'));
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
-  useEffect(() => {
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-          .then(reg => {
-            console.log('Service Worker registered:', reg);
-          })
-          .catch(err => console.error('Service Worker registration failed:', err));
-      });
-    }
-  }, []);
+  const router = useRouter();
 
-  return (
-    <div className="min-h-screen bg-gray-50" suppressHydrationWarning>
-      <Suspense fallback={<div>Loading POS System...</div>}>
-        <POSSystemPage />
-      </Suspense>
-    </div>
-  );
+  useEffect(() => {
+    router.replace('/customer-views');
+  }, [router]);
+
+  return <div></div>;
 }
