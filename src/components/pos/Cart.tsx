@@ -1,6 +1,5 @@
 'use client';
 
-import React, { useState } from 'react';
 import { ShoppingCart } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import CartItem from './CartItem';
@@ -9,11 +8,10 @@ import { useCart } from '@/context/cart.context';
 import { useLanguage } from '@/context/language.context';
 
 export default function Cart({ onCheckout }: { onCheckout: () => void }) {
-    const { cart, subtotal, tax, total } = useCart();
+    const { cart, subtotal, tax, total, showModal, setShowModal } = useCart();
     const { language } = useLanguage();
-    const [showModal, setShowModal] = useState(false);
     const pathname = usePathname();
-    const isCustomerViewsRoute = pathname.includes('customer-views');
+    const isCustomerViewsRoute = pathname.includes('/customer-views');
 
     const translations = {
         en: {
@@ -90,17 +88,17 @@ export default function Cart({ onCheckout }: { onCheckout: () => void }) {
                         <span>${total.toFixed(2)}</span>
                     </div>
                 </div>
+
                 {!isCustomerViewsRoute && (
                     <button
                         onClick={() => setShowModal(true)}
                         disabled={cart.length === 0}
-                        className={`w-full py-3 rounded-lg font-bold text-white transition-colors ${cart.length === 0
-                                ? 'bg-gray-300 cursor-not-allowed'
-                                : 'bg-blue-600 hover:bg-blue-700'
+                        className={`w-full py-3 rounded-lg font-bold text-white transition-colors ${cart.length === 0 ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
                             }`}
                     >
                         {t.checkout}
                     </button>
+
                 )}
             </div>
 

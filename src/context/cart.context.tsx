@@ -13,6 +13,8 @@ interface CartContextType {
     tax: number;
     total: number;
     clearCart: () => void;
+    showModal: boolean;
+    setShowModal: (show: boolean) => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -21,6 +23,7 @@ const CART_STORAGE_KEY = 'my_pos_cart';
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
     const [cart, setCart] = useState<CartItem[]>([]);
+    const [showModal, setShowModal] = useState(false); // Shared modal state
 
     // Load cart from localStorage on mount
     useEffect(() => {
@@ -81,7 +84,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
     return (
         <CartContext.Provider
-            value={{ cart, addToCart, removeFromCart, updateQuantity, subtotal, tax, total, clearCart }}
+            value={{ cart, addToCart, removeFromCart, updateQuantity, subtotal, tax, total, clearCart, showModal, setShowModal }}
         >
             {children}
         </CartContext.Provider>
