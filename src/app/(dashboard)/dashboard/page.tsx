@@ -1,5 +1,6 @@
 "use client";
 
+import DashboardAnalysis from "@/components/dashboard/DashboardAnalysis";
 import { useLanguage } from "@/context/language.context";
 
 export default function DashboardPage() {
@@ -22,6 +23,7 @@ export default function DashboardPage() {
                 {labels[language].overview}
             </h1>
             <p className="mt-2 text-gray-600">{labels[language].welcome}</p>
+            <DashboardAnalysis />
         </div>
     );
 }
